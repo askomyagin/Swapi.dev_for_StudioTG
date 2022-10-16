@@ -23,7 +23,7 @@ export default NotFound;
 
 const ErrorContainer = styled.div`
     background-color: #17002f;
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     display: flex;
     flex-direction: column;

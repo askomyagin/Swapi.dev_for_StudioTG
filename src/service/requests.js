@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const _apiBase = 'https://swapi.dev/api';
-const _imageBase = 'https://starwars-visualguide.com/assets/img';
 
 const commonHeaders = {
     'Content-Type': 'application/json',

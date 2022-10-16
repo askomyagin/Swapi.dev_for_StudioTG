@@ -3,9 +3,24 @@ import Male from '../image/Male.png';
 import Female from '../image/Female.png';
 import Robo from '../image/Robo.png';
 import { useEffect, useRef } from 'react';
-import { DateBirth, Gender, Description, DescriptionItem, Number, Label } from './style/cardStyle';
+import {
+    DateBirth,
+    Gender,
+    Description,
+    DescriptionItem,
+    Number,
+    Label,
+    MainContainer,
+    Container,
+    ImageContainer,
+    Img,
+    TagsDescription,
+    DescriptionContainer,
+    PeopleName,
+    DescriptionList,
+} from './style/cardStyle';
 
-const DescriptionCard = ({ people, setDescription }) => {
+const DescriptionCardWookie = ({ people, setDescription }) => {
     const ref = useRef(null);
     const image = people.gender === 'male' ? Male : people.gender === 'female' ? Female : Robo;
 
@@ -36,14 +51,14 @@ const DescriptionCard = ({ people, setDescription }) => {
             <Container ref={ref}>
                 <ImageContainer>
                     <Img src={image} />
-                    <Tags>
+                    <TagsDescription>
                         {people.birth_year !== 'unknown' && (
                             <DateBirth>{people.birth_year}</DateBirth>
                         )}
                         {people.gender !== 'n/a' && people.gender !== 'unknown' && (
                             <Gender gender={people.gender}>{people.gender}</Gender>
                         )}
-                    </Tags>
+                    </TagsDescription>
                 </ImageContainer>
                 <DescriptionContainer>
                     <PeopleName>{people.name}</PeopleName>
@@ -89,4 +104,4 @@ const DescriptionCard = ({ people, setDescription }) => {
     );
 };
 
-export default DescriptionCard;
+export default DescriptionCardWookie;

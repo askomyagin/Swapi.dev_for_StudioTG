@@ -12,12 +12,13 @@ const Home = () => {
     const [dropDown, setDropDown] = useState(false);
     const [eyeColors, setEyeColors] = useState(initinalEyeColors);
     const [valueInput, setValueInput] = useState('');
+    const [language, setLanguage] = useState('En');
     const setActivePage = useSetActivePage();
     const { totalCount } = useSelector((state) => state.people);
 
     useEffect(() => {
         setActivePage();
-    }, []);
+    }, [setActivePage]);
 
     function updateInputText(e) {
         setValueInput(e.target.value);
@@ -38,8 +39,16 @@ const Home = () => {
 
     const onChange = debounce(updateInputText, 500);
 
+    const ChangeLanguage = () => {
+        if (language === 'En') setLanguage('Wookiee');
+        else setLanguage('En');
+    };
+
     return (
         <HomeContainer>
+            <LanguageContainer>
+                <Language onClick={ChangeLanguage}>{`Language: ${language}`}</Language>
+            </LanguageContainer>
             <HeaderContainer>
                 <Title>{`${totalCount} Peoples for you to choose your favorite`}</Title>
                 <Input placeholder="find..." onChange={onChange} />
@@ -52,7 +61,7 @@ const Home = () => {
                     setEyeColors={setEyeColors}
                 />
             </HeaderContainer>
-            <Cards filter={filter} valueInput={valueInput} />
+            <Cards filter={filter} valueInput={valueInput} language={language} />
         </HomeContainer>
     );
 };
@@ -71,7 +80,7 @@ const HeaderContainer = styled.div`
     display: flex;
     flex-direction: column;
     width: 60%;
-    margin-top: 73px;
+    margin-top: 36px;
     margin-bottom: 47px;
 `;
 
@@ -93,4 +102,23 @@ const Input = styled.input`
     border-radius: 40px;
     padding-left: 20px;
     padding-right: 20px;
+`;
+
+const LanguageContainer = styled.div`
+    width: 80%;
+    margin-top: 17px;
+    display: flex;
+    justify-content: end;
+`;
+
+const Language = styled.button`
+    background-color: white;
+    border: none;
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #4b4b4b;
+    cursor: pointer;
 `;

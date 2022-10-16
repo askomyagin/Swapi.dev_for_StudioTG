@@ -2,6 +2,7 @@ import { PeopleActionTypes } from '../types/peopleTypes';
 
 const initialState = {
     loading: false,
+    loadingMore: false,
     peopleList: [],
     nextPage: null,
     prevPage: null,
@@ -34,6 +35,7 @@ export const peopleReducer = (state = initialState, action) => {
         case PeopleActionTypes.LOAD_MORE_PEOPLE:
             return {
                 ...state,
+                loadingMore: true,
             };
 
         case PeopleActionTypes.LOAD_MORE_PEOPLE_SUCCESS:
@@ -42,12 +44,14 @@ export const peopleReducer = (state = initialState, action) => {
                 peopleList: [...state.peopleList, ...action.payload.results],
                 nextPage: action.payload.next,
                 prevPage: action.payload.previous,
+                loadingMore: false,
             };
 
         case PeopleActionTypes.LOAD_MORE_PEOPLE_FAIL:
             return {
                 ...state,
                 error: action.payload,
+                loadingMore: false,
             };
 
         default:

@@ -3,13 +3,14 @@ import styled from '@emotion/styled';
 export const CardContainer = styled.button`
     border: none;
     width: 352px;
-    height: 137px;
+    height: 160px;
     background: #f0f0f0;
     border-radius: 8px;
     margin-bottom: 45px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-around;
     cursor: pointer;
     :hover {
         box-shadow: 4px 4px 8px rgba(1, 28, 64, 0.2);
@@ -110,6 +111,16 @@ export const Gender = styled.div`
 export const Tags = styled.div`
     margin-top: 9px;
     margin-left: 25px;
+    display: flex;
+    align-items: center;
+`;
+
+export const Error = styled.div`
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
     display: flex;
     align-items: center;
 `;

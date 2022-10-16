@@ -3,21 +3,39 @@ import { useSelector } from 'react-redux';
 import { useActions } from '../hooks/useActions';
 import { useCallback, useEffect, useState } from 'react';
 import Card from './card';
+import { SpinnerRoundFilled } from 'spinners-react';
 
-const Cards = ({ filter, valueInput }) => {
+const Cards = ({ filter, valueInput, language }) => {
     const { fetchPeople, fetchMorePeople } = useActions();
-    const { peopleList, nextPage, loading, error } = useSelector((state) => state.people);
+    const { peopleList, nextPage, loading, error, loadingMore } = useSelector(
+        (state) => state.people
+    );
     const [goLoadNextPage, setLoadNextPage] = useState(false);
 
     useEffect(() => {
         fetchPeople(valueInput);
-    }, [valueInput]);
+    }, [valueInput, fetchPeople]);
 
     useEffect(() => {
         if (goLoadNextPage && nextPage !== null) {
             fetchMorePeople(nextPage).finally(() => setLoadNextPage(false));
         }
-    }, [goLoadNextPage]);
+    }, [goLoadNextPage, nextPage, fetchMorePeople]);
+
+    const scrollHandler = useCallback(
+        (e) => {
+            if (
+                (e.target.documentElement.scrollHeight -
+                    (e.target.documentElement.scrollTop + window.innerHeight) <
+                    500 ||
+                    e.target.documentElement.Height < window.innerHeight) &&
+                nextPage
+            ) {
+                setLoadNextPage(true);
+            }
+        },
+        [nextPage]
+    );
 
     useEffect(() => {
         document.addEventListener('scroll', scrollHandler);
@@ -25,19 +43,15 @@ const Cards = ({ filter, valueInput }) => {
         return function () {
             document.removeEventListener('scroll', scrollHandler);
         };
-    }, []);
+    }, [scrollHandler]);
 
-    const scrollHandler = useCallback((e) => {
-        if (
-            e.target.documentElement.scrollHeight -
-                (e.target.documentElement.scrollTop + window.innerHeight) <
-            200
-        ) {
-            setLoadNextPage(true);
-        }
-    }, []);
+    if (loading)
+        return (
+            <CardsContainer>
+                <SpinnerRoundFilled color={'#1F2A63'} size={80} />
+            </CardsContainer>
+        );
 
-    if (loading) return <div>Loading</div>;
     if (error) return <div>error</div>;
 
     return (
@@ -51,13 +65,20 @@ const Cards = ({ filter, valueInput }) => {
                             )
                             .map((el, idx) => (
                                 <div key={idx}>
-                                    <Card people={el} />
+                                    <Card people={el} language={language} />
                                 </div>
                             ))}
                     </CardsContainer>
+                    {loadingMore && (
+                        <Spinner>
+                            <SpinnerRoundFilled color={'#1F2A63'} />
+                        </Spinner>
+                    )}
                 </>
             ) : (
-                <div>нет элементов</div>
+                <CardsContainer>
+                    <Text>Нет элементов</Text>
+                </CardsContainer>
             )}
         </>
     );
@@ -70,4 +91,17 @@ const CardsContainer = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+`;
+
+const Spinner = styled.div`
+    margin-bottom: 50px;
+`;
+
+const Text = styled.div`
+    font-family: 'Karla';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 29px;
+    color: #000000;
 `;
