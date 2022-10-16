@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 import { useActions } from '../hooks/useActions';
-import { useCallback, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import Card from './card';
 import { SpinnerRoundFilled } from 'spinners-react';
 
@@ -11,6 +11,8 @@ const Cards = ({ filter, valueInput, language }) => {
         (state) => state.people
     );
     const [goLoadNextPage, setLoadNextPage] = useState(false);
+    const [lastRowInView, setLastRowInView] = useState(false);
+    const lastRowRef = useRef(null);
 
     useEffect(() => {
         fetchPeople(valueInput);
@@ -22,28 +24,26 @@ const Cards = ({ filter, valueInput, language }) => {
         }
     }, [goLoadNextPage, nextPage, fetchMorePeople]);
 
-    const scrollHandler = useCallback(
-        (e) => {
-            if (
-                (e.target.documentElement.scrollHeight -
-                    (e.target.documentElement.scrollTop + window.innerHeight) <
-                    500 ||
-                    e.target.documentElement.Height < window.innerHeight) &&
-                nextPage
-            ) {
-                setLoadNextPage(true);
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => setLastRowInView(entries[0].isIntersecting),
+            {
+                threshold: 0.1,
             }
-        },
-        [nextPage]
-    );
+        );
+        if (lastRowRef.current) {
+            observer.observe(lastRowRef.current);
+        }
+        return () => {
+            observer.disconnect();
+        };
+    });
 
     useEffect(() => {
-        document.addEventListener('scroll', scrollHandler);
-
-        return function () {
-            document.removeEventListener('scroll', scrollHandler);
-        };
-    }, [scrollHandler]);
+        if (lastRowInView && !loadingMore) {
+            setLoadNextPage(true);
+        }
+    }, [setLoadNextPage, lastRowInView]);
 
     if (loading)
         return (
@@ -69,11 +69,12 @@ const Cards = ({ filter, valueInput, language }) => {
                                 </div>
                             ))}
                     </CardsContainer>
-                    {loadingMore && (
+                    {goLoadNextPage && (
                         <Spinner>
                             <SpinnerRoundFilled color={'#1F2A63'} />
                         </Spinner>
                     )}
+                    {nextPage !== null && <div ref={lastRowRef} />}
                 </>
             ) : (
                 <CardsContainer>
