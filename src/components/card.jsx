@@ -15,7 +15,6 @@ import {
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useActions } from '../hooks/useActions';
-import DescriptionCardWookie from './descriptionCardWookie';
 
 const Card = ({ people, language }) => {
     const [description, setDescription] = useState(false);
@@ -24,15 +23,30 @@ const Card = ({ people, language }) => {
 
     useEffect(() => {
         if (language === 'Wookiee') fetchLanguagePeople(people.url);
-    }, [language, fetchLanguagePeople]);
+    }, [language, fetchLanguagePeople, people.url]);
 
-    const genderFormatWookiee = (gender) => {
+    const genderFormatGender = (gender) => {
         if (gender === 'scraanwo') return 'male';
         if (gender === 'wwwoscraanwo') return 'female';
         if (gender === 'acworcscraakacrcoowaahaowo') return 'hermaphrodite';
+        return gender;
     };
 
-    const FormatEn = ({ people }) => {
+    const CardItem = ({ people }) => {
+        const BirthDayTag = people.birth_year !== 'unknown' &&
+            people.birth_year !== 'huwhorwhooohwh' && <DateBirth>{people.birth_year}</DateBirth>;
+
+        const GenderTag = people.gender !== 'n/a' &&
+            people.gender !== 'unknown' &&
+            people.gender !== 'wh/ra' && (
+                <Gender gender={genderFormatGender(people.gender)}>{people.gender}</Gender>
+            );
+
+        const LabelHeight =
+            people.designation_height !== undefined ? people.designation_height : 'height';
+
+        const LabelMass = people.designation_mass !== undefined ? people.designation_mass : 'mass';
+
         return (
             <>
                 <CardContainer onClick={() => setDescription(true)}>
@@ -40,82 +54,47 @@ const Card = ({ people, language }) => {
                     <Description>
                         <DescriptionItem>
                             <Number>{people.height !== 'unknown' ? people.height : 'no'}</Number>
-                            <Label>height</Label>
+                            <Label>{LabelHeight}</Label>
                         </DescriptionItem>
                         <DescriptionItem>
                             <Number>{people.mass !== 'unknown' ? people.mass : 'no'}</Number>
-                            <Label>mass</Label>
+                            <Label>{LabelMass}</Label>
                         </DescriptionItem>
                     </Description>
                     <Tags>
-                        {people.birth_year !== 'unknown' && (
-                            <DateBirth>{people.birth_year}</DateBirth>
-                        )}
-                        {people.gender !== 'n/a' && people.gender !== 'unknown' && (
-                            <Gender gender={people.gender}>{people.gender}</Gender>
-                        )}
-                    </Tags>
-                </CardContainer>
-                {description && <DescriptionCard people={people} setDescription={setDescription} />}
-            </>
-        );
-    };
-
-    const FormatWookie = ({ indexElement }) => {
-        if (indexElement === -1)
-            return (
-                <CardContainer>
-                    <Error>
-                        <span class="material-icons">error_outline</span> Error loading data
-                    </Error>
-                </CardContainer>
-            );
-        return (
-            <>
-                <CardContainer onClick={() => setDescription(true)}>
-                    <Name>{peopleWookiee[indexElement].name}</Name>
-                    <Description>
-                        <DescriptionItem>
-                            <Number>{peopleWookiee[indexElement].height}</Number>
-                            <Label>{peopleWookiee[indexElement].designation_height}</Label>
-                        </DescriptionItem>
-                        <DescriptionItem>
-                            <Number>{peopleWookiee[indexElement].mass}</Number>
-                            <Label>{peopleWookiee[indexElement].designation_mass}</Label>
-                        </DescriptionItem>
-                    </Description>
-                    <Tags>
-                        {peopleWookiee[indexElement].birth_year !== 'huwhorwhooohwh' && (
-                            <DateBirth>{peopleWookiee[indexElement].birth_year}</DateBirth>
-                        )}
-                        {peopleWookiee[indexElement].gender !== 'wh/ra' && (
-                            <Gender
-                                gender={genderFormatWookiee(peopleWookiee[indexElement].gender)}
-                            >
-                                {peopleWookiee[indexElement].gender}
-                            </Gender>
-                        )}
+                        {BirthDayTag}
+                        {GenderTag}
                     </Tags>
                 </CardContainer>
                 {description && (
-                    <DescriptionCardWookie
-                        people={peopleWookiee[indexElement]}
+                    <DescriptionCard
+                        people={people}
                         setDescription={setDescription}
+                        BirthDayTag={BirthDayTag}
+                        GenderTag={GenderTag}
+                        LabelHeight={LabelHeight}
+                        LabelMass={LabelMass}
                     />
                 )}
             </>
         );
     };
 
+    const CardError = (
+        <CardContainer>
+            <Error>
+                <span className="material-icons">error_outline</span> Error loading data
+            </Error>
+        </CardContainer>
+    );
+
     const indexElement = peopleWookiee.findIndex((el) => el.url === people.url);
 
-    //return <FormatEn people={people} />;
-
-    return language === 'Wookiee' ? (
-        <FormatWookie indexElement={indexElement} />
-    ) : (
-        <FormatEn people={people} />
-    );
+    if (language === 'Wookiee') {
+        return indexElement !== -1 ? <CardItem people={peopleWookiee[indexElement]} /> : CardError;
+    } else {
+        return <CardItem people={people} />;
+    }
 };
 
 export default Card;

@@ -10,7 +10,7 @@ export const CardContainer = styled.button`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
     cursor: pointer;
     :hover {
         box-shadow: 4px 4px 8px rgba(1, 28, 64, 0.2);

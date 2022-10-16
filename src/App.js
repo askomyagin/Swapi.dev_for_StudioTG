@@ -1,7 +1,6 @@
-import Header from './components/header';
 import HomePage from './components/homePage';
 import Home from './components/home';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import NotFound from './components/notFound';
 import Page from './components/page';
 
@@ -26,9 +25,8 @@ function App() {
                             </Page>
                         }
                     />
-                    <Route path="*" element={<Navigate to="/" />} />
+                    <Route path="*" element={<NotFound />} />
                 </Route>
-                <Route path="/404" element={<NotFound />} />
             </Routes>
         </>
     );
