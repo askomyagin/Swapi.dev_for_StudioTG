@@ -43,7 +43,7 @@ const Cards = ({ filter, valueInput, language }) => {
         if (lastRowInView && !loadingMore) {
             setLoadNextPage(true);
         }
-    }, [setLoadNextPage, lastRowInView]);
+    }, [setLoadNextPage, lastRowInView, loadingMore]);
 
     if (loading)
         return (
@@ -52,11 +52,18 @@ const Cards = ({ filter, valueInput, language }) => {
             </CardsContainer>
         );
 
-    if (error) return <div>error</div>;
+    if (error)
+        return (
+            <CardsContainer>
+                <Text>Error</Text>
+            </CardsContainer>
+        );
 
     return (
         <>
-            {peopleList.length > 0 ? (
+            {peopleList.filter((el) =>
+                filter === 'ALL' ? el : el.eye_color === filter.toLowerCase()
+            ).length > 0 ? (
                 <>
                     <CardsContainer>
                         {peopleList
@@ -65,7 +72,7 @@ const Cards = ({ filter, valueInput, language }) => {
                             )
                             .map((el, idx) => (
                                 <div key={idx}>
-                                    <Card people={el} language={language} />
+                                    <Card people={el} languagePage={language} />
                                 </div>
                             ))}
                     </CardsContainer>
@@ -74,11 +81,11 @@ const Cards = ({ filter, valueInput, language }) => {
                             <SpinnerRoundFilled color={'#1F2A63'} />
                         </Spinner>
                     )}
-                    {nextPage !== null && <div ref={lastRowRef} />}
+                    {nextPage !== null && <div style={{ height: '10px' }} ref={lastRowRef} />}
                 </>
             ) : (
                 <CardsContainer>
-                    <Text>Нет элементов</Text>
+                    <Text>No elements</Text>
                 </CardsContainer>
             )}
         </>

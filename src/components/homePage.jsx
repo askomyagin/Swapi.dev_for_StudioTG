@@ -16,7 +16,7 @@ const HomePage = () => {
             </DescriptionContainer>
             <BannerContainer>
                 <Link to={'/home'}>
-                    <Img src={Banner} />
+                    <Img src={Banner} alt={'Banner'} />
                 </Link>
             </BannerContainer>
         </HomeContainer>

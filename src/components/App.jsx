@@ -1,8 +1,8 @@
-import HomePage from './components/homePage';
-import Home from './components/home';
+import HomePage from './homePage';
+import Home from './home';
 import { Route, Routes } from 'react-router-dom';
-import NotFound from './components/notFound';
-import Page from './components/page';
+import NotFound from './notFound';
+import Page from './page';
 
 function App() {
     return (

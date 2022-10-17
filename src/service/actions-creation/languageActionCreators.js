@@ -13,7 +13,7 @@ export const fetchLanguagePeople = (url) => async (dispatch) => {
         .catch((err) =>
             dispatch({
                 type: LanguageActionTypes.FETCH_LANGUAGE_FAIL,
-                payload: err,
+                payload: url,
             })
         );
 };

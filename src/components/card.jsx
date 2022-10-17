@@ -15,15 +15,16 @@ import {
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useActions } from '../hooks/useActions';
+import { SpinnerRoundFilled } from 'spinners-react';
 
-const Card = ({ people, language }) => {
+const Card = ({ people, languagePage }) => {
     const [description, setDescription] = useState(false);
     const { fetchLanguagePeople } = useActions();
-    const { peopleWookiee } = useSelector((state) => state.language);
+    const { peopleWookiee, error } = useSelector((state) => state.language);
 
     useEffect(() => {
-        if (language === 'Wookiee') fetchLanguagePeople(people.url);
-    }, [language, fetchLanguagePeople, people.url]);
+        if (languagePage === 'Wookiee') fetchLanguagePeople(people.url);
+    }, [languagePage, fetchLanguagePeople, people.url]);
 
     const genderFormatGender = (gender) => {
         if (gender === 'scraanwo') return 'male';
@@ -34,12 +35,16 @@ const Card = ({ people, language }) => {
 
     const CardItem = ({ people }) => {
         const BirthDayTag = people.birth_year !== 'unknown' &&
-            people.birth_year !== 'huwhorwhooohwh' && <DateBirth>{people.birth_year}</DateBirth>;
+            people.birth_year !== 'huwhorwhooohwh' && (
+                <DateBirth data-testid="birthDayTag">{people.birth_year}</DateBirth>
+            );
 
         const GenderTag = people.gender !== 'n/a' &&
             people.gender !== 'unknown' &&
             people.gender !== 'wh/ra' && (
-                <Gender gender={genderFormatGender(people.gender)}>{people.gender}</Gender>
+                <Gender gender={genderFormatGender(people.gender)} data-testid="genderTag">
+                    {people.gender}
+                </Gender>
             );
 
         const LabelHeight =
@@ -50,14 +55,18 @@ const Card = ({ people, language }) => {
         return (
             <>
                 <CardContainer onClick={() => setDescription(true)}>
-                    <Name>{people.name}</Name>
-                    <Description>
+                    <Name data-testid="namePeople">{people.name}</Name>
+                    <Description data-testid="descriptionContainer">
                         <DescriptionItem>
-                            <Number>{people.height !== 'unknown' ? people.height : 'no'}</Number>
+                            <Number data-testid="number">
+                                {people.height !== 'unknown' ? people.height : 'no'}
+                            </Number>
                             <Label>{LabelHeight}</Label>
                         </DescriptionItem>
                         <DescriptionItem>
-                            <Number>{people.mass !== 'unknown' ? people.mass : 'no'}</Number>
+                            <Number data-testid="number">
+                                {people.mass !== 'unknown' ? people.mass : 'no'}
+                            </Number>
                             <Label>{LabelMass}</Label>
                         </DescriptionItem>
                     </Description>
@@ -90,8 +99,16 @@ const Card = ({ people, language }) => {
 
     const indexElement = peopleWookiee.findIndex((el) => el.url === people.url);
 
-    if (language === 'Wookiee') {
-        return indexElement !== -1 ? <CardItem people={peopleWookiee[indexElement]} /> : CardError;
+    if (languagePage === 'Wookiee') {
+        if (error.findIndex((el) => el === people.url) !== -1) return CardError;
+
+        return indexElement !== -1 ? (
+            <CardItem people={peopleWookiee[indexElement]} />
+        ) : (
+            <CardContainer>
+                <SpinnerRoundFilled color={'#1F2A63'} />
+            </CardContainer>
+        );
     } else {
         return <CardItem people={people} />;
     }

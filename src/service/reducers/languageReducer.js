@@ -22,7 +22,7 @@ export const languageReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: false,
-                error: action.payload,
+                error: [...state.error, action.payload],
             };
 
         default:

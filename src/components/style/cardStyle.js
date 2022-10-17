@@ -58,7 +58,7 @@ export const Number = styled.div`
     justify-content: center;
 `;
 
-export const Label = styled.div`
+export const Label = styled.label`
     font-family: 'Karla';
     font-style: normal;
     font-weight: 400;

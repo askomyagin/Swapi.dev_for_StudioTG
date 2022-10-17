@@ -58,10 +58,11 @@ const DescriptionCard = ({
             : 'Skin color:';
 
     return (
-        <MainContainer>
+        <MainContainer data-testid="descriptionCard">
             <ButtonExit>
                 <span
                     className="material-icons"
+                    data-testid="buttonExit"
                     onClick={() => setDescription(false)}
                     style={{ fontSize: '38px', cursor: 'pointer' }}
                 >
@@ -77,7 +78,7 @@ const DescriptionCard = ({
                     </Tags>
                 </ImageContainer>
                 <DescriptionContainer>
-                    <PeopleName>{people.name}</PeopleName>
+                    <PeopleName data-testid="descriptionPeopleName">{people.name}</PeopleName>
 
                     <DescriptionList>
                         <DescriptionListItem>
