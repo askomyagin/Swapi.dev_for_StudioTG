@@ -121,7 +121,7 @@ const MainContainer = styled.div`
     position: fixed;
     z-index: 200;
     width: 100vw;
-    min-width: 620px;
+    min-width: 100%;
     min-height: 100%;
     left: 0;
     top: 0;
@@ -141,16 +141,22 @@ const Container = styled.div`
     border-radius: 16px;
     display: flex;
     align-items: center;
+    @media screen and (max-width: 660px) {
+        flex-direction: column;
+        height: 100%;
+        min-width: 90%;
+    }
 `;
 
 const ButtonExit = styled.div`
-    width: 50%;
-    min-width: 500px;
+    min-width: 620px;
     text-align: end;
+    @media screen and (max-width: 660px) {
+        min-width: 90%;
+    }
 `;
 
 const ImageContainer = styled.div`
-    min-width: 280px;
     width: 45%;
     height: 100%;
     background: #1f2a63;
@@ -159,10 +165,18 @@ const ImageContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    @media screen and (max-width: 660px) {
+        width: 100%;
+        margin-bottom: 15px;
+        border-radius: 16px 16px 0px 0px;
+    }
 `;
 const Img = styled.img`
     width: 280px;
     height: 280px;
+    @media screen and (max-width: 660px) {
+        margin-top: 15px;
+    }
 `;
 
 const Tags = styled.div`
@@ -170,6 +184,10 @@ const Tags = styled.div`
     width: 90%;
     display: flex;
     justify-content: end;
+    @media screen and (max-width: 660px) {
+        width: 50%;
+        margin-bottom: 15px;
+    }
 `;
 
 const DescriptionContainer = styled.div`
@@ -203,6 +221,7 @@ const DescriptionListItem = styled.div`
     display: flex;
     justify-content: space-around;
     margin-top: 10px;
+    align-items: center;
 `;
 
 const ListLabel = styled.div`

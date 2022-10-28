@@ -15,6 +15,9 @@ export const CardContainer = styled.button`
     :hover {
         box-shadow: 4px 4px 8px rgba(1, 28, 64, 0.2);
     }
+    @media screen and (max-width: 400px) {
+        width: 280px;
+    }
 `;
 
 export const Name = styled.div`
@@ -33,6 +36,11 @@ export const Description = styled.div`
     margin-left: ${(props) => (props.description ? '0px' : '12px')};
     margin-top: ${(props) => (props.description ? '0px' : '10px')};
     display: flex;
+
+    @media screen and (max-width: 660px) {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
 `;
 
 export const DescriptionItem = styled.div`

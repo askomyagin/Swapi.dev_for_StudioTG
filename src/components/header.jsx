@@ -31,24 +31,38 @@ export default Header;
 
 const HeaderContainer = styled.div`
     background-color: #1f2a63;
-    height: 93px;
+    min-height: 93px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-around;
+    flex-wrap: wrap;
 `;
 
 const LogoContainer = styled.div`
     height: 80px;
     width: 150px;
+    @media screen and (max-width: 600px) {
+        margin-top: 15px;
+    }
 `;
 
 const NavBar = styled.div`
     display: flex;
     width: 300px;
     justify-content: space-between;
+    @media screen and (max-width: 600px) {
+        flex: 80%;
+        flex-direction: column;
+        align-items: center;
+    }
 `;
-const NavBarItem = styled.div``;
+const NavBarItem = styled.div`
+    @media screen and (max-width: 600px) {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+`;
 
 const ItemText = styled.div`
     color: #fff;

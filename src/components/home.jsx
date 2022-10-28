@@ -82,6 +82,9 @@ const HeaderContainer = styled.div`
     width: 60%;
     margin-top: 36px;
     margin-bottom: 47px;
+    @media screen and (max-width: 650px) {
+        width: 80%;
+    }
 `;
 
 const Title = styled.div`
